@@ -1,20 +1,41 @@
 pasillo(a, regular).
 
+
+eliminar_char(_, [], []).
+eliminar_char(C, [C|T], R) :- eliminar_char(C, T, R).
+eliminar_char(C, [H|T], [H|R]) :- H \= C, eliminar_char(C, T, R).
+
+eliminar(S, C, R) :-
+    string_chars(S, L),
+    eliminar_char(C, L, L2),
+    string_chars(R, L2).
+
+cargar(File, Contenido):-
+    (exists_file(File) -> 
+        open(File, read, Stream),
+        read_stream_to_codes(Stream, Code),
+        close(Stream),
+        atom_codes(Atom, Code),
+		eliminar(Atom, '\n', Atom2),
+		eliminar(Atom2, ' ', Atom3),
+		write(Atom3)
+    ; write('Error: El archivo no existe.'), fail).
+
 cruzar(Mapa, Palancas) :- 
 	member(Mapa, Palanca), !, mapa_seguro(Mapa, Palancas).
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Pasillo %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-$ Es pasillo y el modo es regular
+% Es pasillo y el modo es regular
 pasillo_seguro(pasillo(Letra, Modo), [(Letra, Posicion)|_]) :- 
 	Modo = regular, Posicion = arriba.
 
-$ Es pasillo y el modo es de_cabeza
+% Es pasillo y el modo es de_cabeza
 pasillo_seguro(pasillo(Letra, Modo), [(Letra, Posicion)|_]) :- 
 	Modo = de_cabeza, Posicion = abajo.
 
-$ Es pasillo pero no coincide la letra
+% Es pasillo pero no coincide la letra
 pasillo_seguro(pasillo(Letra, Modo), [_|Resto]) :- 
 	pasillo_seguro(pasillo(Letra, Modo), Resto).
 
