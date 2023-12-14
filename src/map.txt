@@ -1,4 +1,0 @@
-bifurcacion(
-    pasillo(b, regular),
-    pasillo(b, regular)
-)

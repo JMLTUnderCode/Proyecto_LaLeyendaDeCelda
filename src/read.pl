@@ -15,5 +15,7 @@ cargar(File, Contenido):-
         atom_codes(Atom, Code),
 		eliminar(Atom, '\n', Atom2),
 		eliminar(Atom2, ' ', Atom3),
-		write(Atom3)
+        eliminar(Atom3, '\t', Atom4),
+        term_string(Contenido, Atom4)
+		% write(Atom4)
     ; write('Error: El archivo no existe.'), fail).

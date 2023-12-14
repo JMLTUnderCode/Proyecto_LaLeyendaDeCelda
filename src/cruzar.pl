@@ -2,6 +2,30 @@
 concatenar([], Y, Y).
 concatenar([A|X], Y, [A|Z]) :- concatenar(X,Y,Z).
 
+
+% Utilidad para cargar archivos y transformar la entrada
+eliminar_char(_, [], []).
+eliminar_char(C, [C|T], R) :- eliminar_char(C, T, R).
+eliminar_char(C, [H|T], [H|R]) :- H \= C, eliminar_char(C, T, R).
+
+eliminar(S, C, R) :-
+    string_chars(S, L),
+    eliminar_char(C, L, L2),
+    string_chars(R, L2).
+
+cargar(File, Contenido):-
+    (exists_file(File) -> 
+        open(File, read, Stream),
+        read_stream_to_codes(Stream, Code),
+        close(Stream),
+        atom_codes(Atom, Code),
+		eliminar(Atom, '\n', Atom2),
+		eliminar(Atom2, ' ', Atom3),
+        eliminar(Atom3, '\t', Atom4),
+        term_string(Contenido, Atom4)
+		% write(Atom4)
+    ; write('Error: El archivo no existe.'), fail).
+
 /**************************** DEFINICION DE 'cruzar' ********************************/
 % cruzar pasillos
 cruzar(X,_,_) :- var(X) -> write('ERROR: Mapa siempre debe ser instanciado'), !, fail.
