@@ -2,13 +2,19 @@
 
 ## Ejecución
 
+La variable Mapa siempre debe ser instanciada con un mapa válido. Para esto, se
+puede utilizar el predicado $leer/1$ que solicita al usuario la ruta del archivo
+que contiene el mapa a utilizar.
+
+Las variables Palancas y Seguro pueden ser o no instanciadas. Si no se
+instancian se obtendrán todas las configuraciones de palancas posibles
+para el mapa dado.
+
 ```bash
     $ swipl
     ?- [main].
-    ?- leer(Mapa)
-    Ingrese en nombre del archivo: data/mapa.txt.
-    ?- cruzar(Mapa, Palancas, Seguro).
-    ?- siempre_seguro(Mapa)
+    ?- leer(Mapa), cruzar(Mapa, <Palancas>, <Seguro>).
+    ?- leer(Mapa), siempre_seguro(Mapa).
 ```
 
 ## Implementación
