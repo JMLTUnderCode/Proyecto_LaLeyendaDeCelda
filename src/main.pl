@@ -21,10 +21,11 @@
 *   - X: Lista base
 *   - Y: Lista a concatenar
 *   - Z: Lista resultante de concatenar X y Y
-* Comportamiento: Concatena dos listas
+* Comportamiento: Concatena dos listas, sin repetir elementos
 */
 concatenar([], Y, Y).
-concatenar([A|X], Y, [A|Z]) :- concatenar(X,Y,Z).
+concatenar([A|X], Y, Z) :- member(A,Y), !, concatenar(X, Y, Z).
+concatenar([A|X], Y, [A|Z]) :- concatenar(X, Y, Z).
 
 
 /* 
@@ -92,6 +93,27 @@ negacion(pasillo(X, Modo), pasillo(X, Modo2)) :- negacion(Modo, Modo2).
 negacion(junta(P, Q), bifurcacion(negacion(P), negacion(Q))).
 negacion(bifurcacion(P, Q), junta(negacion(P), negacion(Q))).
 
+/*
+* Predicado: miembro/2
+* Argumentos:
+*   - A: Elemento a buscar (Letra)
+*   - L: Lista de pares (Letra, Modo)
+* Comportamiento: Verifica si un elemento (Letra) pertenece a una lista
+*                 de pares (Letra, Modo)
+*/
+miembro(A, [(A,_)|_]).
+miembro(A, [(_,B)|T]) :- A \= B, miembro(A, T).
+
+/*
+* Predicado: noHayRepetidos/1
+* Argumentos:
+*   - L: Lista de pares (Letra, Modo)
+* Comportamiento: Verifica si una lista de pares (Letra, Modo) no
+*                 tiene elementos repetidos
+*/
+noHayRepetidos([]).
+noHayRepetidos([(A,_)|T]) :- not(miembro(A,T)), noHayRepetidos(T).
+
 
 /******************************** cruzar/3 ************************************/
 
@@ -130,13 +152,15 @@ cruzar(junta(Submapa, Negado), Palancas, trampa) :-
 cruzar(junta(Submapa1, Submapa2), Palancas, seguro) :- 
     cruzar(Submapa1, P1, seguro),
     cruzar(Submapa2, P2, seguro),
-    concatenar(P1,P2,Palancas).
+    concatenar(P1,P2,Palancas),
+    noHayRepetidos(Palancas).
 
 % not (P /\ Q)
 cruzar(junta(Submapa1, Submapa2), Palancas, trampa) :- 
     cruzar(Submapa1, P1, _),
     cruzar(Submapa2, P2, _),
     concatenar(P1, P2, Palancas),
+    noHayRepetidos(Palancas),
     not(cruzar(junta(Submapa1, Submapa2), Palancas, seguro)).
 
 
@@ -160,13 +184,15 @@ cruzar(bifurcacion(Submapa, Negado), Palancas, seguro) :-
 cruzar(bifurcacion(Submapa1, Submapa2), Palancas, trampa) :- 
     cruzar(Submapa1, P1, trampa),
     cruzar(Submapa2, P2, trampa),
-    concatenar(P1,P2,Palancas).
+    concatenar(P1,P2,Palancas),
+    noHayRepetidos(Palancas).
     
 % P \/ Q
 cruzar(bifurcacion(Submapa1, Submapa2), Palancas, seguro) :- 
     cruzar(Submapa1, P1, _),
     cruzar(Submapa2, P2, _),
     concatenar(P1, P2, Palancas),
+    noHayRepetidos(Palancas),
     not(cruzar(bifurcacion(Submapa1, Submapa2), Palancas, trampa)).
 
 
@@ -179,17 +205,7 @@ cruzar(bifurcacion(Submapa1, Submapa2), Palancas, seguro) :-
 *   - Mapa: Representación de un laberinto como pasillos, bifurcaciones y juntas
 * Comportamiento: Verifica si un Mapa es siempre cruzable
 */
-siempre_seguro(Mapa) :- 
-    var(Mapa),
-    (
-        not(cruzar(Mapa,_,trampa)),
-        write('true.'), nl
-    ; 
-        write('false.'), nl
-    ), !.
-siempre_seguro(Mapa) :- not(cruzar(Mapa,_,trampa)), !.
-
-
+siempre_seguro(Mapa) :- not(cruzar(Mapa,_,trampa)).
 
 /********************************** leer/1 ************************************/
 
@@ -205,3 +221,21 @@ leer(Mapa) :-
     read(Archivo),
     term_string(Archivo, ArchivoString),
     cargar(ArchivoString, Mapa).
+
+/******************************* para ejecutar con archivo ********************/
+siempre_seguro_desde_archivo(Path) :-
+    once(cargar(Path, Mapa)),
+    siempre_seguro(Mapa), !.
+
+cruzar_seguro_desde_archivo(PathMapa, PathPalancas) :-
+    once(cargar(PathMapa, Mapa)),
+    once(cargar(PathPalancas, Palancas)),
+    cruzar(Mapa, Palancas, Seguro),
+    writeln(Seguro), !.
+
+cruzar_palancas_desde_archivo(PathMapa, Seguro) :-
+    once(cargar(PathMapa, Mapa)),
+    (findall(Palancas, cruzar(Mapa, Palancas, Seguro), AllPalancas),
+    AllPalancas \= [], 
+    forall(member(Palancas, AllPalancas), writeln(Palancas)));
+    writeln('false').

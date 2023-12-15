@@ -1,0 +1,25 @@
+[src/main].
+
+cruzar_seguro_desde_archivo('src/data/mapas/c1', 'src/data/palancas/c1').
+
+cruzar_seguro_desde_archivo('src/data/mapas/c2', 'src/data/palancas/c2').
+
+cruzar_palancas_desde_archivo('src/data/mapas/c3', seguro).
+
+cruzar_palancas_desde_archivo('src/data/mapas/c3', trampa).
+
+cruzar_palancas_desde_archivo('src/data/mapas/c5', seguro).
+
+cruzar_palancas_desde_archivo('src/data/mapas/c5', trampa).
+
+siempre_seguro_desde_archivo('src/data/mapas/s1').
+
+siempre_seguro_desde_archivo('src/data/mapas/s2').
+
+siempre_seguro_desde_archivo('src/data/mapas/s3').
+
+siempre_seguro_desde_archivo('src/data/mapas/s4').
+
+siempre_seguro_desde_archivo('src/data/mapas/s5').
+
+halt.
