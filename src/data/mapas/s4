@@ -1,4 +1,4 @@
 bifurcacion(
 	pasillo(a, regular),
 	pasillo(b, de_cabeza)
-)
+).

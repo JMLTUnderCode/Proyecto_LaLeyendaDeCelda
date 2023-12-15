@@ -4,4 +4,4 @@ junta(
 		pasillo(b, regular),
 		pasillo(c, de_cabeza)
 	)
-)
+).

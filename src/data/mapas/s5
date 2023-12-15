@@ -7,4 +7,4 @@ bifurcacion(
 		pasillo(a, regular),
 		pasillo(b, regular)
 	)
-)
+).

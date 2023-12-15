@@ -26,9 +26,6 @@ nueva lista que elimina todas las existencias del elemento.
 carateres, aplica el predicado $eliminar_char/3$ sobre cada elemento de la lista
 y vuelve a construir una nueva cadena de texto.
 
-* $cargar/2$: Utilidad para la carga del contenido de un archivo de texto como 
-un término.
-
 * $negacion/2$: Predicado que obtiene la negación de una expresión que puede ser
 el estado de una palanca o un sub mapa.
 
@@ -63,8 +60,7 @@ falso dependiendo del valor obtenido por cruzar sin suministrar una Palanca
 específica.
 
 * $leer/1$: Solicita al usuario la ruta del archivo que contiene el mapa a 
-utilizar. Luego, obtiene el contenido del archivo en forma de término usando el
-predicado $cargar/2$.
+utilizar. Luego, obtiene el contenido del archivo en la variable Mapa.
 
 
 ### Predicados para pruebas desde archivos

@@ -54,26 +54,6 @@ eliminar(S, C, R) :-
     eliminar_elem(C, L, L2),
     string_chars(R, L2).
 
-
-/* 
-* Predicado: cargar/2
-* Argumentos: 
-*   - Archivo: Path a un archivo de texto
-*   - Contenido: Contenido del archivo como término
-* Comportamiento: Lee un archivo texto y convierte su contenido en un término
-*/
-cargar(Archivo, Contenido):-
-    (exists_file(Archivo) -> 
-        open(Archivo, read, Stream),
-        read_stream_to_codes(Stream, Code),
-        close(Stream),
-        atom_codes(Atom, Code),
-		eliminar(Atom, '\n', Atom2),
-		eliminar(Atom2, ' ', Atom3),
-        eliminar(Atom3, '\t', Atom4),
-        term_string(Contenido, Atom4)
-    ; write('Error: El archivo no existe.'), fail).
-
 /*
 * Predicado: negacion/2
 * Argumentos:
@@ -217,10 +197,14 @@ siempre_seguro(Mapa) :- not(cruzar(Mapa,_,trampa)).
 *                 a utilizar
 */
 leer(Mapa) :-
-    write('Ingrese en nombre del archivo: '),
-    read(Archivo),
-    term_string(Archivo, ArchivoString),
-    cargar(ArchivoString, Mapa).
+    write('Ingrese el nombre del archivo: '),
+    read_line_to_string(user_input, ArchivoStr),
+    atom_string(Archivo, ArchivoStr),
+    (exists_file(Archivo) -> 
+        see(Archivo),
+        read(Mapa),
+        seen
+    ; write('Error: El archivo no existe.'), fail).
 
 /******************************* para ejecutar con archivo ********************/
 siempre_seguro_desde_archivo(Path) :-
