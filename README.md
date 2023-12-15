@@ -69,10 +69,10 @@ predicado $cargar/2$.
 
 ### Predicados para pruebas desde archivos
 
-* $siempre_seguro_desde_archivo/1$: Predicado que verifica si un mapa es siempre
+* $siempre\_seguro\_desde\_archivo/1$: Predicado que verifica si un mapa es siempre
 cruzable independientemente de la configuración de las palancas. Dado un archivo
 de mapa.
 
-* $cruzar_seguro_desde_archivo/2$: Predicado que verifica si un Mapa y una configuración de palancas es cruzable o no. Dados los archivos de mapa y configuración de palancas.
+* $cruzar\_seguro\_desde\_archivo/2$: Predicado que verifica si un Mapa y una configuración de palancas es cruzable o no. Dados los archivos de mapa y configuración de palancas.
 
-* $cruzar_palancas_desde_archivo/2$: Predicado que busca todas las configuraciones de palancas de un mapa. Dado un archivo de mapa y el atomo 'seguro' o 'trampa'. 
+* $cruzar\_palancas\_desde\_archivo/2$: Predicado que busca todas las configuraciones de palancas de un mapa. Dado un archivo de mapa y el atomo 'seguro' o 'trampa'. Se utilizó el predicado $findall/3$ para poder realizar la impresión del resultado obtenido en $cruzar/3$.
