@@ -80,7 +80,7 @@ cargar(Archivo, Contenido):-
 /* 
 * Predicado: cruzar/3
 * Argumentos: 
-*   - Mapa: Representación de un laberinto como pasillos, bifucaciones y juntas
+*   - Mapa: Representación de un laberinto como pasillos, bifurcaciones y juntas
 *   - Palancas: Arreglo de pares (Letra, Modo)
 *   - Seguro: Verificación del estado del Mapa y Palancas en seguro o trampa
 * Comportamiento: Verifica si un Mapa con una configuración de Palancas se puede
@@ -155,18 +155,18 @@ cruzar(bifurcacion(Submapa1, Submapa2), Palancas, seguro) :-
 /* 
 * Predicado: siempre_seguro/1
 * Argumentos: 
-*   - Mapa: Representación de un laberinto como pasillos, bifucaciones y juntas
+*   - Mapa: Representación de un laberinto como pasillos, bifurcaciones y juntas
 * Comportamiento: Verifica si un Mapa es siempre cruzable
 */
 siempre_seguro(Mapa) :- 
     var(Mapa),
     (
-        cruzar(Mapa,_,seguro),
+        not(cruzar(Mapa,_,trampa)),
         write('true.'), nl
     ; 
         write('false.'), nl
     ), !.
-siempre_seguro(Mapa) :- cruzar(Mapa,_,seguro), !.
+siempre_seguro(Mapa) :- not(cruzar(Mapa,_,trampa)), !.
 
 
 
@@ -175,7 +175,7 @@ siempre_seguro(Mapa) :- cruzar(Mapa,_,seguro), !.
 /* 
 * Predicado: leer/1
 * Argumentos: 
-*   - Mapa: Representación de un laberinto como pasillos, bifucaciones y juntas
+*   - Mapa: Representación de un laberinto como pasillos, bifurcaciones y juntas
 * Comportamiento: Captura de la consola la ruta del archivo que contiene el mapa
 *                 a utilizar
 */
