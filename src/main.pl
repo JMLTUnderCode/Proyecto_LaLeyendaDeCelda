@@ -113,9 +113,8 @@ cruzar(junta(Submapa1, Submapa2), Palancas, seguro) :-
 cruzar(junta(Submapa1, Submapa2), Palancas, trampa) :- 
     cruzar(Submapa1, P1, _),
     cruzar(Submapa2, P2, _),
-    concatenar(P1, P2, PosiblesPalancas),
-    not(cruzar(junta(Submapa1, Submapa2), PosiblesPalancas, seguro)),
-    PosiblesPalancas = Palancas.
+    concatenar(P1, P2, Palancas),
+    not(cruzar(junta(Submapa1, Submapa2), Palancas, seguro)).
 
 /* Verificación de bifurcaciones */
 cruzar(bifurcacion(Submapa, Submapa), Palancas, Seguro) :- 
@@ -137,9 +136,8 @@ cruzar(bifurcacion(Submapa1, Submapa2), Palancas, trampa) :-
 cruzar(bifurcacion(Submapa1, Submapa2), Palancas, seguro) :- 
     cruzar(Submapa1, P1, _),
     cruzar(Submapa2, P2, _),
-    concatenar(P1, P2, PosiblesPalancas),
-    not(cruzar(bifurcacion(Submapa1, Submapa2), PosiblesPalancas, trampa)),
-    PosiblesPalancas = Palancas.
+    concatenar(P1, P2, Palancas),
+    not(cruzar(bifurcacion(Submapa1, Submapa2), Palancas, trampa)).
 
 
 
