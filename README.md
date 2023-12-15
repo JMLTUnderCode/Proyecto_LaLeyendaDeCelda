@@ -2,10 +2,11 @@
 
 ## Ejecución
 
-```prolog
+```bash
 $ swipl
 ?- [main].
-?- leer(Mapa), data/mapa.txt.
+?- leer(Mapa)
+Ingrese en nombre del archivo: data/mapa.txt.
 ?- cruzar(Mapa, Palancas, Seguro).
 ?- siempre_seguro(Mapa)
 ```
