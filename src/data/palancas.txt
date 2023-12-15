@@ -1,1 +1,1 @@
-[(a, abajo)]
+[(a, arriba), (b, arriba), (a, arriba), (b, arriba)]

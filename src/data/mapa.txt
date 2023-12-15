@@ -1,1 +1,10 @@
-pasillo(a, regular)
+bifurcacion(
+	bifurcacion(
+		pasillo(a, de_cabeza),
+		pasillo(b, de_cabeza)
+	),
+	junta(
+		pasillo(a, regular),
+		pasillo(b, regular)
+	)
+)
