@@ -94,45 +94,54 @@ cruzar(pasillo(X, de_cabeza), [(X, arriba)], trampa).
 cruzar(pasillo(X, de_cabeza), [(X, abajo)], seguro).
 
 /* Verificación de juntas */
+
+% P /\ P = P
 cruzar(junta(Submapa, Submapa), Palancas, Seguro) :- 
     cruzar(Submapa, Palancas, Seguro), !.
 
-cruzar(junta(pasillo(X, Modo1), pasillo(X, Modo2)), _, seguro) :- 
-    Modo1 \= Modo2, !, fail.
+% P /\ !P = false
+cruzar(junta(pasillo(X, _), pasillo(X, _)), _, seguro) :- !, fail.
 
+% not (P /\ !P) = true (pero se buscan todas las soluciones)
 cruzar(junta(pasillo(X, Modo1), pasillo(X, Modo2)), Palancas, trampa) :- 
-    (cruzar(pasillo(X, Modo1), Palancas, trampa);
-    cruzar(pasillo(X, Modo2), Palancas, trampa)),
-    !.
+    cruzar(pasillo(X, Modo1), Palancas, trampa);
+    cruzar(pasillo(X, Modo2), Palancas, trampa), !.
 
+% P /\ Q
 cruzar(junta(Submapa1, Submapa2), Palancas, seguro) :- 
     cruzar(Submapa1, P1, seguro),
     cruzar(Submapa2, P2, seguro),
     concatenar(P1,P2,Palancas).
 
+% not (P /\ Q)
 cruzar(junta(Submapa1, Submapa2), Palancas, trampa) :- 
     cruzar(Submapa1, P1, _),
     cruzar(Submapa2, P2, _),
     concatenar(P1, P2, Palancas),
     not(cruzar(junta(Submapa1, Submapa2), Palancas, seguro)).
 
+
 /* Verificación de bifurcaciones */
+
+% P \/ P = P
 cruzar(bifurcacion(Submapa, Submapa), Palancas, Seguro) :- 
     cruzar(Submapa, Palancas, Seguro), !.
 
-cruzar(bifurcacion(pasillo(X, Modo1), pasillo(X, Modo2)), _, seguro) :- 
-    Modo1 \= Modo2, !, fail.
+% not (P \/ !P) = false
+cruzar(bifurcacion(pasillo(X, _), pasillo(X, _)), _, trampa) :- !, fail.
 
-cruzar(bifurcacion(pasillo(X, Modo1), pasillo(X, Modo2)), Palancas, trampa) :- 
-    (cruzar(pasillo(X, Modo1), Palancas, trampa);
-    cruzar(pasillo(X, Modo2), Palancas, trampa)),
-    !.
+% P \/ !P = true (pero se buscan todas las soluciones)
+cruzar(bifurcacion(pasillo(X, Modo1), pasillo(X, Modo2)), Palancas, seguro) :-
+    cruzar(pasillo(X, Modo1), Palancas, seguro);
+    cruzar(pasillo(X, Modo2), Palancas, seguro), !.
 
+% not (P \/ Q)
 cruzar(bifurcacion(Submapa1, Submapa2), Palancas, trampa) :- 
     cruzar(Submapa1, P1, trampa),
     cruzar(Submapa2, P2, trampa),
     concatenar(P1,P2,Palancas).
     
+% P \/ Q
 cruzar(bifurcacion(Submapa1, Submapa2), Palancas, seguro) :- 
     cruzar(Submapa1, P1, _),
     cruzar(Submapa2, P2, _),
