@@ -73,6 +73,24 @@ cargar(Archivo, Contenido):-
         term_string(Contenido, Atom4)
     ; write('Error: El archivo no existe.'), fail).
 
+/*
+* Predicado: negacion/2
+* Argumentos:
+*   - Expresión: Expresión (Modo, pasillo, bifurcación o junta)
+*   - negacion: Expresión negada
+* Comportamiento: Verifica si una expresión es la negación de otra
+*/
+
+% (!true = false)
+negacion(regular, de_cabeza).
+negacion(de_cabeza, regular).
+
+% !P
+negacion(pasillo(X, Modo), pasillo(X, Modo2)) :- negacion(Modo, Modo2).
+
+% De Morgan
+negacion(junta(P, Q), bifurcacion(negacion(P), negacion(Q))).
+negacion(bifurcacion(P, Q), junta(negacion(P), negacion(Q))).
 
 
 /******************************** cruzar/3 ************************************/
@@ -100,12 +118,13 @@ cruzar(junta(Submapa, Submapa), Palancas, Seguro) :-
     cruzar(Submapa, Palancas, Seguro), !.
 
 % P /\ !P = false
-cruzar(junta(pasillo(X, _), pasillo(X, _)), _, seguro) :- !, fail.
+cruzar(junta(Submapa, Negado), _, seguro) :- negacion(Submapa, Negado), !, fail.
 
 % not (P /\ !P) = true (pero se buscan todas las soluciones)
-cruzar(junta(pasillo(X, Modo1), pasillo(X, Modo2)), Palancas, trampa) :- 
-    cruzar(pasillo(X, Modo1), Palancas, trampa);
-    cruzar(pasillo(X, Modo2), Palancas, trampa), !.
+cruzar(junta(Submapa, Negado), Palancas, trampa) :- 
+    negacion(Submapa, Negado),
+    (cruzar(Negado, Palancas, trampa);
+    cruzar(Submapa, Palancas, trampa), !).
 
 % P /\ Q
 cruzar(junta(Submapa1, Submapa2), Palancas, seguro) :- 
@@ -128,12 +147,14 @@ cruzar(bifurcacion(Submapa, Submapa), Palancas, Seguro) :-
     cruzar(Submapa, Palancas, Seguro), !.
 
 % not (P \/ !P) = false
-cruzar(bifurcacion(pasillo(X, _), pasillo(X, _)), _, trampa) :- !, fail.
+cruzar(bifurcacion(Submapa, Negado), _, trampa) :-
+    negacion(Submapa,Negado), !, fail.
 
 % P \/ !P = true (pero se buscan todas las soluciones)
-cruzar(bifurcacion(pasillo(X, Modo1), pasillo(X, Modo2)), Palancas, seguro) :-
-    cruzar(pasillo(X, Modo1), Palancas, seguro);
-    cruzar(pasillo(X, Modo2), Palancas, seguro), !.
+cruzar(bifurcacion(Submapa, Negado), Palancas, seguro) :-
+    negacion(Submapa, Negado),
+    (cruzar(Submapa, Palancas, seguro);
+    cruzar(Negado, Palancas, seguro), !).
 
 % not (P \/ Q)
 cruzar(bifurcacion(Submapa1, Submapa2), Palancas, trampa) :- 
