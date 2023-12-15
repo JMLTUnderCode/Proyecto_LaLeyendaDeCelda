@@ -3,12 +3,12 @@
 ## Ejecución
 
 ```bash
-$ swipl
-?- [main].
-?- leer(Mapa)
-Ingrese en nombre del archivo: data/mapa.txt.
-?- cruzar(Mapa, Palancas, Seguro).
-?- siempre_seguro(Mapa)
+    $ swipl
+    ?- [main].
+    ?- leer(Mapa)
+    Ingrese en nombre del archivo: data/mapa.txt.
+    ?- cruzar(Mapa, Palancas, Seguro).
+    ?- siempre_seguro(Mapa)
 ```
 
 ## Implementación
@@ -16,7 +16,8 @@ Ingrese en nombre del archivo: data/mapa.txt.
 ### Predicados auxiliares
 El proyecto se compone de los siguientes predicados auxiliares:
 
-* $concatenar/3$: Predicado para la concatenación de dos listas.
+* $concatenar/3$: Predicado para la concatenación de dos listas,
+omitiendo repeticiones.
 
 * $eliminar\_elem/3$: Predicado que dado un elemento y una lista, obtiene una 
 nueva lista que elimina todas las existencias del elemento.
@@ -27,6 +28,15 @@ y vuelve a construir una nueva cadena de texto.
 
 * $cargar/2$: Utilidad para la carga del contenido de un archivo de texto como 
 un término.
+
+* $negacion/2$: Predicado que obtiene la negación de una expresión que puede ser
+el estado de una palanca o un sub mapa.
+
+* $miembro/2$: Predicado que verifica si un par (palanca, estado) pertenece a
+una lista de pares solamente según el nombre de la palanca.
+
+* $noHayRepetidos/1$: Predicado que verifica si una lista de pares no tiene
+palancas repetidas, donde el nombre de la palanca es el criterio de comparación.
 
 
 ### Predicados principales
@@ -55,3 +65,14 @@ específica.
 * $leer/1$: Solicita al usuario la ruta del archivo que contiene el mapa a 
 utilizar. Luego, obtiene el contenido del archivo en forma de término usando el
 predicado $cargar/2$.
+
+
+### Predicados para pruebas desde archivos
+
+* $siempre_seguro_desde_archivo/1$: Predicado que verifica si un mapa es siempre
+cruzable independientemente de la configuración de las palancas. Dado un archivo
+de mapa.
+
+* $cruzar_seguro_desde_archivo/2$: Predicado que verifica si un Mapa y una configuración de palancas es cruzable o no. Dados los archivos de mapa y configuración de palancas.
+
+* $cruzar_palancas_desde_archivo/2$: Predicado que busca todas las configuraciones de palancas de un mapa. Dado un archivo de mapa y el atomo 'seguro' o 'trampa'. 
