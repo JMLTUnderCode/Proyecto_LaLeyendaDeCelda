@@ -2,7 +2,7 @@
 
 cruzar_seguro_desde_archivo('src/data/mapas/c1', 'src/data/palancas/c1').
 
-cruzar_seguro_desde_archivo('src/data/mapas/c2', 'src/data/palancas/c2').
+cruzar_seguro_desde_archivo('src/data/mapas/c2', 'src/data/palancas/c1').
 
 cruzar_palancas_desde_archivo('src/data/mapas/c3', seguro).
 
