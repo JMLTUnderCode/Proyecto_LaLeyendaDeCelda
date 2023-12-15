@@ -94,15 +94,16 @@ cruzar(pasillo(X, de_cabeza), [(X, arriba)], trampa).
 cruzar(pasillo(X, de_cabeza), [(X, abajo)], seguro).
 
 /* Verificación de juntas */
-cruzar(junta(pasillo(X, Modo), pasillo(X, Modo)), Palancas, Seguro) :- 
-    cruzar(pasillo(X, Modo), Palancas, Seguro), !.
+cruzar(junta(Submapa, Submapa), Palancas, Seguro) :- 
+    cruzar(Submapa, Palancas, Seguro), !.
 
 cruzar(junta(pasillo(X, Modo1), pasillo(X, Modo2)), _, seguro) :- 
     Modo1 \= Modo2, !, fail.
 
 cruzar(junta(pasillo(X, Modo1), pasillo(X, Modo2)), Palancas, trampa) :- 
-    cruzar(pasillo(X, Modo1), Palancas, trampa);
-    cruzar(pasillo(X, Modo2), Palancas, trampa), !.
+    (cruzar(pasillo(X, Modo1), Palancas, trampa);
+    cruzar(pasillo(X, Modo2), Palancas, trampa)),
+    !.
 
 cruzar(junta(Submapa1, Submapa2), Palancas, seguro) :- 
     cruzar(Submapa1, P1, seguro),
@@ -117,15 +118,16 @@ cruzar(junta(Submapa1, Submapa2), Palancas, trampa) :-
     PosiblesPalancas = Palancas.
 
 /* Verificación de bifurcaciones */
-cruzar(bifurcacion(pasillo(X, Modo), pasillo(X, Modo)), Palancas, Seguro) :- 
-    cruzar(pasillo(X, Modo), Palancas, Seguro), !.
+cruzar(bifurcacion(Submapa, Submapa), Palancas, Seguro) :- 
+    cruzar(Submapa, Palancas, Seguro), !.
 
 cruzar(bifurcacion(pasillo(X, Modo1), pasillo(X, Modo2)), _, seguro) :- 
     Modo1 \= Modo2, !, fail.
 
 cruzar(bifurcacion(pasillo(X, Modo1), pasillo(X, Modo2)), Palancas, trampa) :- 
-    cruzar(pasillo(X, Modo1), Palancas, trampa);
-    cruzar(pasillo(X, Modo2), Palancas, trampa), !.
+    (cruzar(pasillo(X, Modo1), Palancas, trampa);
+    cruzar(pasillo(X, Modo2), Palancas, trampa)),
+    !.
 
 cruzar(bifurcacion(Submapa1, Submapa2), Palancas, trampa) :- 
     cruzar(Submapa1, P1, trampa),
