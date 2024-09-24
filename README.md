@@ -1,4 +1,11 @@
-# Proyecto_2_LLP1_La_Leyenda_de_Celda
+# **La Leyenda de Celda**
+### CI-3641: Lenguajes de Programación I
+### Septiembre - Diciembre 2023
+#### Integrantes:  
+Carlos Sivira, 15-11377  
+Daniel Figueroa, 16-10371  
+Junior Lara, 17-10303  
+Astrid Alvarado, 18-10938
 
 ## Ejecución
 
